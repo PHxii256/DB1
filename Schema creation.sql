@@ -16,7 +16,7 @@ CREATE TABLE location( --composite attr in erd
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	region VARCHAR(30) NOT NULL,
 	country VARCHAR(30) NOT NULL,
-	address VARCHAR(255)
+	location_address VARCHAR(255)
 );
 
 CREATE TABLE airport (
