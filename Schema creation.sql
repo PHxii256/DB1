@@ -2,6 +2,7 @@ CREATE TABLE passenger (
     id INT IDENTITY(1,1) PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
+    title VARCHAR(30) NOT NULL,
     phone_number VARCHAR(15) NOT NULL 
         CHECK (
             phone_number NOT LIKE '%[^0-9]%' 
@@ -9,7 +10,7 @@ CREATE TABLE passenger (
         ),
     gender VARCHAR(9) CHECK (gender IN ('Male', 'Female')),  -- enum (multivalued)
     age_bracket VARCHAR(6) CHECK (age_bracket IN ('Infant', 'Child', 'Adult')),
-	nationality VARCHAR(30)
+    nationality VARCHAR(30)
 );
 
 CREATE TABLE location( --composite attr in erd
@@ -22,8 +23,8 @@ CREATE TABLE location( --composite attr in erd
 CREATE TABLE airport (
     code CHAR(3) PRIMARY KEY, 
     airport_name VARCHAR(60) NOT NULL,
-	location_id INT NOT NULL,
-	FOREIGN KEY (location_id) REFERENCES location(id) 
+    location_id INT NOT NULL, 
+    FOREIGN KEY (location_id) REFERENCES location(id) 
 );
 
 
