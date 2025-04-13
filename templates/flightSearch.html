@@ -1,0 +1,23 @@
+{% extends "layout.html" %} {% block title %}Home{% endblock %} {% block body %}
+
+<script src="/static/js/passengersCount.js"></script>
+<form id="flightSearchForm">
+  Departure:
+  <select id="departure">
+    <!-- Add predefined departure cities here -->
+    <option selected disabled>Select a departure city</option>
+    <option>Newyork (JFK)</option></select
+  ><br />
+  Destination:
+  <select id="destination">
+    <!-- Add predefined destination cities here --></select
+  ><br />
+  Departure Date: <input type="date" id="departDate" min="" /><br />
+  Passengers: <button type="button" id="decreasePassengers">-</button>
+  <span id="passengersCount">1</span>
+  <button type="button" id="increasePassengers">+</button><br />
+  <input type="hidden" id="passengers" value="1" />
+  <input type="submit" value="Search Flights" />
+</form>
+
+{% endblock %}
