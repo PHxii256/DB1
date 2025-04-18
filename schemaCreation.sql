@@ -81,3 +81,11 @@ CREATE TABLE ticket (
     FOREIGN KEY (passenger_id) REFERENCES passenger(id),
     FOREIGN KEY (flight_id) REFERENCES flight(id)
 );
+
+CREATE TABLE passanger_flight(
+passanger_id INT,
+flight_id INT,
+PRIMARY KEY(passanger_id, flight_id),
+constraint fk_passanger_id foreign key(passanger_id) references passenger(id),
+constraint fk_flight_id foreign key(flight_id) references flight(id)
+);
