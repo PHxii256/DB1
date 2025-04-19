@@ -41,34 +41,3 @@ INSERT INTO airplane (model, max_capacity, airline_id) VALUES
 ('Boeing 737', 180, 1),
 ('Airbus A380', 500, 2),
 ('Boeing 777', 300, 3);
-
-INSERT INTO seat (airplane_id, seat_number, isle_id, class, is_available) VALUES
-(1, 1, 'A', 'Economy', 1),
-(1, 2, 'B', 'Economy', 1),
-(1, 3, 'C', 'Business', 1),
-(1, 4, 'D', 'Economy', 1);
-
-INSERT INTO passenger (first_name, last_name, phone_number, gender, age_bracket, nationality) VALUES
-('Alice', 'Johnson', '1234567890', 'Female', 'Adult', NULL),
-('Bob', 'Smith', '2345678901', 'Male', 'Adult', NULL),
-('Cecilia', 'Tanaka', '3456789012', 'Female', 'Adult', 'Japan'),
-('David', 'Nguyen', '4567890123', 'Male', 'Child', 'Vietnam'),
-('Elena', 'Garcia', '5678901234', 'Female', 'Adult', 'Brazil'),
-('Farouk', 'Hassan', '6789012345', 'Male', 'Adult', NULL),
-('Grace', 'Lee', '7890123456', 'Female', 'Infant', 'South Korea'),
-('James', 'Brown', '8901234567', 'Male', 'Adult', 'UK'),
-('jane', 'austin', '19071734214', 'Female', 'Adult', 'USA'),
-('jacob', 'smith', '8201564667', 'Male', 'Adult', 'South Africa');
-
-INSERT INTO flight (from_airport_code, to_airport_code, airline_id, airplane_id, departure_time, duration, status) VALUES
-('JFK', 'LHR', 1, 1, '2025-04-15 08:00:00', 420, 'On Time'),
-('LHR', 'CAI', 2, 2, '2025-04-16 09:30:00', 720, 'Delayed'),
-('DXB', 'YYZ', 3, 3, '2025-04-17 23:00:00', 960, 'Cancelled'),
-('SFO', 'JFK', 1, 1, '2025-04-18 06:00:00', 840, 'On Time'),
-('NRT', 'DXB', 2, 2, '2025-04-19 21:00:00', 540, 'On Time');
-
-INSERT INTO ticket (passenger_id, flight_id, seat_number, isle_id) VALUES
-(1, 1, 1, 'A'), 
-(2, 1, 2, 'B'),  
-(3, 2, 3, 'C'),  
-(4, 2, 4, 'D');
