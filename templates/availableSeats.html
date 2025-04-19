@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkyWings Seat Selection</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="airline-header">
+  <div class="container">
+    <div class="logo">
+      <i class="fas fa-plane"></i>
+      SkyWings Airlines
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="flight-info">
+    <div class="info-item">
+      <div class="info-label">Flight Number</div>
+      <div class="info-value">SW 2024</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Departure</div>
+      <div class="info-value">JFK → LHR</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Date</div>
+      <div class="info-value">15 DEC 2024</div>
+    </div>
+  </div>
+
+  <div class="seat-map">
+    <div class="row-label">Business Class</div>
+    <div class="seat-grid">
+      <!-- Row 1 -->
+      <div class="seat-row">
+        <div class="seat business window-seat">1A</div>
+        <div class="seat business">1B</div>
+        <div class="seat business occupied">1C</div>
+        <div class="seat business">1D</div>
+        <div class="seat business">1E</div>
+        <div class="seat business window-seat">1F</div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="seat-row">
+        <div class="seat business window-seat">2A</div>
+        <div class="seat business">2B</div>
+        <div class="seat business">2C</div>
+        <div class="seat business occupied">2D</div>
+        <div class="seat business">2E</div>
+        <div class="seat business window-seat">2F</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-panel">
+    <div class="selected-seats">
+      <h3>Selected Seats</h3>
+      <p>No seats selected</p>
+    </div>
+
+    <div class="price-summary">
+      <div class="price-row">
+        <span>Base Fare:</span>
+        <span>$499</span>
+      </div>
+      <div class="price-row">
+        <span>Seat Selection:</span>
+        <span>$0</span>
+      </div>
+      <div class="price-row total-price">
+        <span>Total:</span>
+        <span>$499</span>
+      </div>
+    </div>
+
+    <button class="confirm-btn">Confirm Selection</button>
+  </div>
+</div>
+
+<script src="scripts.js"></script>
+
+</body>
+</html>

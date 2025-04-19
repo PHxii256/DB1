@@ -1,23 +1,88 @@
-{% extends "layout.html" %} {% block title %}Home{% endblock %} {% block body %}
+{% extends "layout.html" %} {% block title %}Search{% endblock %} {% block style
+%}flightSearch.css{% endblock %} {% block body %}
 
 <script src="/static/js/passengersCount.js"></script>
-<form id="flightSearchForm">
-  Departure:
-  <select id="departure">
-    <!-- Add predefined departure cities here -->
-    <option selected disabled>Select a departure city</option>
-    <option>Newyork (JFK)</option></select
-  ><br />
-  Destination:
-  <select id="destination">
-    <!-- Add predefined destination cities here --></select
-  ><br />
-  Departure Date: <input type="date" id="departDate" min="" /><br />
-  Passengers: <button type="button" id="decreasePassengers">-</button>
-  <span id="passengersCount">1</span>
-  <button type="button" id="increasePassengers">+</button><br />
-  <input type="hidden" id="passengers" value="1" />
-  <input type="submit" value="Search Flights" />
-</form>
+<script src="/static/js/formInputStyle.js"></script>
+
+<div class="search-container">
+  <div class="search-header">
+    <h1>Flight Search</h1>
+    <p>Find your perfect journey with SkyWings</p>
+  </div>
+
+  <form id="flightSearchForm" method="post">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">From</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-plane-departure"></i>
+            </span>
+            <select id="departure" name="departure" class="form-control">
+              <option selected disabled>Select a departure city</option>
+              {% for place in places %}
+              <option value="{{ place[0] }}">{{ place[0] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">To</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-plane-arrival"></i>
+            </span>
+            <select id="destination" name="destination" class="form-control">
+              <option selected disabled>Select a destination city</option>
+              {% for place in places %}
+              <option value="{{ place[0] }}">{{ place[0] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Departure Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="departDate"
+            name="departDate"
+            value="{{ today }}"
+            min="{{ today }}"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Passengers</label>
+          <div class="passenger-counter">
+            <button type="button" class="counter-btn" id="decreasePassengers">
+              <i class="fas fa-minus"></i>
+            </button>
+            <div class="counter-value" id="passengersCount">1</div>
+            <button type="button" class="counter-btn" id="increasePassengers">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <input type="hidden" id="passengers" name="passengers" value="1" />
+        </div>
+      </div>
+
+      <div class="col-12">
+        <button type="submit" class="search-btn">
+          <i class="fas fa-search me-2"></i>Search Flights
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
 
 {% endblock %}
