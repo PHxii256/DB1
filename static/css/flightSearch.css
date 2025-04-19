@@ -1,0 +1,216 @@
+:root {
+  --skywing-blue: #003580;
+  --skywing-gold: #FFB700;
+  --skywing-light: #0077cc;
+  --skywing-dark: #00204a;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://t3.ftcdn.net/jpg/00/25/55/90/360_F_25559041_9eJ9EcsR1j2Cd0THikGkclEvs5OLuyxu.jpg') center/cover;
+  filter: blur(8px) brightness(0.6);
+  transform: scale(1.1);
+}
+
+.airline-header {
+  background: linear-gradient(135deg, var(--skywing-dark) 0%, var(--skywing-blue) 100%);
+  color: white;
+  padding: 1rem 0;
+  position: relative;
+  z-index: 100;
+}
+
+.search-container {
+  background: rgba(16, 25, 40, 0.7);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+  margin: 100px auto;
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  box-shadow: 0 8px 32px rgba(0, 37, 128, 0.3);
+}
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.search-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.search-header h1 {
+  color: var(--skywing-gold);
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff !important;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--skywing-light);
+  box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.25);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23FFB700' viewBox='0 0 24 24'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM5 7V5h14v2H5z'/%3E%3C/svg%3E");
+  cursor: pointer;
+  filter: none;
+  width: 24px;
+  height: 24px;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.suggestions {
+  background: rgba(0, 53, 128, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  backdrop-filter: blur(5px);
+}
+
+.suggestion-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.suggestion-item:hover {
+  background-color: rgba(0, 119, 204, 0.2);
+}
+
+.passenger-counter {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.counter-btn {
+  background: none;
+  border: none;
+  color: var(--skywing-gold);
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.counter-btn:hover {
+  opacity: 0.8;
+}
+
+.counter-value {
+  color: #fff;
+  margin: 0 1rem;
+  min-width: 30px;
+  text-align: center;
+}
+
+.search-btn {
+  background-color: var(--skywing-blue);
+  color: white;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: var(--skywing-light);
+  transform: translateY(-2px);
+}
+
+/* Ensuring select dropdown options are visible */
+select.form-control {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  appearance: none; /* For better control across browsers */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+select.form-control option {
+  background: rgba(0, 53, 128, 0.3); /* Darken background for better contrast */
+  color: rgba(255, 255, 255, 0.9); /* Ensure option text is readable */
+}
+
+select.form-control:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--skywing-light);
+  box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.25);
+}
+
+/* Fix for hidden dropdown in Firefox */
+select.form-control::-ms-expand {
+  display: none;
+}
+
+/* Ensure the input-group behaves correctly */
+.input-group {
+  overflow: visible !important;
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    margin: 100px 15px;
+    padding: 1.5rem;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+}

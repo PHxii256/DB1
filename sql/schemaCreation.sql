@@ -6,7 +6,6 @@ CREATE TABLE passenger (
     id INT IDENTITY(1,1) PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    title VARCHAR(30) NOT NULL,
     phone_number VARCHAR(15) NOT NULL 
         CHECK (
             phone_number NOT LIKE '%[^0-9]%' 
@@ -23,7 +22,7 @@ CREATE TABLE location( --composite attr in erd
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	region VARCHAR(30) NOT NULL,
 	country VARCHAR(30) NOT NULL,
-	address VARCHAR(255)
+	location_address VARCHAR(255)
 );
 
 CREATE TABLE airport (
