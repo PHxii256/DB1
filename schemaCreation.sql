@@ -12,9 +12,11 @@ CREATE TABLE passenger (
             phone_number NOT LIKE '%[^0-9]%' 
             AND LEN(phone_number) BETWEEN 7 AND 15
         ),
-    gender VARCHAR(9) CHECK (gender IN ('Male', 'Female')),  -- enum (multivalued)
-    age_bracket VARCHAR(6) CHECK (age_bracket IN ('Infant', 'Child', 'Adult')),
-    nationality VARCHAR(30)
+    gender VARCHAR(9) CHECK (gender IN ('Male', 'Female')) NOT NULL,  -- enum (multivalued)
+    age_bracket VARCHAR(6) CHECK (age_bracket IN ('Infant', 'Child', 'Adult')) NOT NULL,
+    nationality VARCHAR(30) NOT NULL,
+    id_doc_type VARCHAR(20) CHECK (id_doc_type IN ('Driver License', 'Passport', 'National ID')) NOT NULL,
+    id_doc_num SMALLINT NOT NULL,
 );
 
 CREATE TABLE location( --composite attr in erd
@@ -72,20 +74,13 @@ CREATE TABLE flight (
 );
 
 CREATE TABLE ticket (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    price SMALLINT NOT NULL,
     passenger_id INT NOT NULL,
     flight_id INT NOT NULL,
     seat_number INT NOT NULL,
     isle_id CHAR(1) NOT NULL,
     FOREIGN KEY (seat_number, isle_id) REFERENCES seat(seat_number, isle_id),
     FOREIGN KEY (passenger_id) REFERENCES passenger(id),
-    FOREIGN KEY (flight_id) REFERENCES flight(id)
-);
-
-CREATE TABLE passanger_flight(
-passanger_id INT,
-flight_id INT,
-PRIMARY KEY(passanger_id, flight_id),
-constraint fk_passanger_id foreign key(passanger_id) references passenger(id),
-constraint fk_flight_id foreign key(flight_id) references flight(id)
+    FOREIGN KEY (flight_id) REFERENCES flight(id),
+    PRIMARY KEY (seat_number, isle_id, passenger_id, flight_id)
 );
