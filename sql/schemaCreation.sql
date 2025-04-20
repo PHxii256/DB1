@@ -110,18 +110,16 @@ AS
         f.departure_time AS departure,
         f.arrival_time AS arrival,
         f.duration,
-        f.base_price AS "basePrice",
-        COUNT(CASE WHEN s.is_available = 1 THEN 1 END) AS availableSeats
+        f.base_price AS "basePrice"
     FROM
         flight f
-        JOIN airport from_airport ON f.from_airport_code = from_airport.code
-        JOIN location from_loc ON from_airport.location_id = from_loc.id
-        JOIN airport to_airport ON f.to_airport_code = to_airport.code
-        JOIN location to_loc ON to_airport.location_id = to_loc.id
-        JOIN airline al ON f.airline_name = al.airline_name
-        JOIN seat s ON f.airplane_registration = s.airplane_registration
-    GROUP BY
-    f.airline_name, al.logo_url, f.flight_number,
-    from_airport.airport_name, from_loc.region, from_loc.country,
-    to_airport.airport_name, to_loc.region, to_loc.country,
-    f.departure_time, f.arrival_time, f.duration, f.base_price;
+        JOIN
+        airport from_airport ON f.from_airport_code = from_airport.code
+        JOIN
+        location from_loc ON from_airport.location_id = from_loc.id
+        JOIN
+        airport to_airport ON f.to_airport_code = to_airport.code
+        JOIN
+        location to_loc ON to_airport.location_id = to_loc.id
+        JOIN
+        airline al ON f.airline_name = al.airline_name;
