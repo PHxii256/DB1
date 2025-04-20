@@ -1,0 +1,153 @@
+{% extends "layout.html" %} {% block title %}Passenger(s) Details{% endblock %}
+{% block body %}
+
+<div class="container my-5">
+  <div class="search-container">
+    <div class="search-header">
+      <h1>
+        <i class="fas fa-user-tie" style="color: var(--skywing-gold)"></i>
+        Passenger(s) Details
+      </h1>
+      <p class="text-white-50">
+        Please provide each traveler’s information as it appears on official
+        documents.
+      </p>
+    </div>
+
+    <form method="POST" action="{{ url_for('passenger_details') }}">
+      <input
+        type="hidden"
+        name="passenger_count"
+        value="{{ passenger_count }}"
+      />
+      {% for i in range(passenger_count) %}
+      <div
+        class="form-section mb-5 p-3 border rounded"
+        style="background-color: rgba(255, 255, 255, 0.05)"
+      >
+        <h4 style="color: var(--skywing-gold)">Passenger {{ i + 1 }}</h4>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label required-field">First Name</label>
+            <input
+              type="text"
+              name="passengers[{{ i }}][firstName]"
+              class="form-control"
+              maxlength="30"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label required-field">Last Name</label>
+            <input
+              type="text"
+              name="passengers[{{ i }}][lastName]"
+              class="form-control"
+              maxlength="30"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label required-field">Gender</label>
+            <select
+              name="passengers[{{ i }}][gender]"
+              class="form-control"
+              required
+            >
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label required-field">Age Bracket</label>
+            <select
+              name="passengers[{{ i }}][ageBracket]"
+              class="form-control"
+              required
+            >
+              <option value="">Select</option>
+              <option>Infant</option>
+              <option>Child</option>
+              <option>Adult</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label required-field">Nationality</label>
+            <select
+              name="passengers[{{ i }}][nationality]"
+              class="form-control"
+              required
+            >
+              <option value="">Select</option>
+              <option>Egypt</option>
+              <option>Palestine</option>
+              <option>Libya</option>
+              <option>Jordan</option>
+              <option>United States</option>
+              <!-- Add more as needed -->
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <label class="form-label required-field">Phone Number</label>
+            <input
+              type="tel"
+              name="passengers[{{ i }}][phone]"
+              class="form-control"
+              pattern="[0-9]{7,15}"
+              required
+            />
+            <small class="form-text text-white-50"
+              >Digits only, 7–15 characters</small
+            >
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label required-field">Document Type</label>
+            <select
+              name="passengers[{{ i }}][documentType]"
+              class="form-control"
+              required
+            >
+              <option value="">Select</option>
+              <option>Passport</option>
+              <option>Driver License</option>
+              <option>National ID</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label required-field">Document Number</label>
+            <input
+              type="text"
+              name="passengers[{{ i }}][documentNumber]"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="background-color: var(--skywing-blue)"
+        >
+          <i class="fas fa-arrow-right me-2"></i>Continue to choosing seats
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
