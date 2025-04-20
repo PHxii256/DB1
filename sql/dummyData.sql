@@ -86,3 +86,45 @@ INSERT INTO airplane (model, max_capacity, airline_id) VALUES
 ('Boeing 737 MAX 8', 189, 8),
 ('Airbus A321neo', 206, 8),
 ('Boeing 787-9 Dreamliner', 300, 8);
+
+-- Inserting flight data (using only airports that exist in the airport table)
+INSERT INTO flight (from_airport_code, to_airport_code, airline_id, airplane_id, departure_time, duration, status) VALUES
+-- Delta flights (airline_id = 1)
+('JFK', 'LAX', 1, 1, '2025-06-15 08:00:00', 300, 'On Time'),  -- Boeing 737-800
+('LAX', 'JFK', 1, 2, '2025-06-15 12:30:00', 310, 'On Time'),  -- Boeing 767-300ER
+('JFK', 'ORD', 1, 3, '2025-06-16 07:45:00', 135, 'On Time'),  -- Airbus A321
+
+-- Emirates flights (airline_id = 2)
+('DXB', 'JFK', 2, 4, '2025-06-15 22:30:00', 780, 'On Time'),  -- Airbus A380
+('JFK', 'DXB', 2, 5, '2025-06-16 01:15:00', 795, 'On Time'),  -- Boeing 777-300ER
+('DXB', 'LHR', 2, 6, '2025-06-17 08:00:00', 420, 'On Time'),  -- Boeing 777-200LR
+
+-- Lufthansa flights (airline_id = 3)
+('LHR', 'CDG', 3, 7, '2025-06-15 09:30:00', 75, 'On Time'),   -- Airbus A350-900
+('CDG', 'JFK', 3, 8, '2025-06-16 14:00:00', 480, 'On Time'),  -- Airbus A340-600
+('LHR', 'ORD', 3, 9, '2025-06-17 10:15:00', 510, 'On Time'),  -- Boeing 747-8
+
+-- Singapore Airlines flights (airline_id = 4)
+('SIN', 'SYD', 4, 10, '2025-06-15 23:55:00', 480, 'On Time'), -- Boeing 777-300ER
+('SYD', 'LAX', 4, 11, '2025-06-16 11:30:00', 840, 'On Time'), -- Airbus A380
+('SIN', 'NRT', 4, 12, '2025-06-18 08:45:00', 360, 'On Time'), -- Airbus A350-900ULR
+
+-- Qatar Airways flights (airline_id = 5)
+('DXB', 'CDG', 5, 13, '2025-06-16 03:30:00', 390, 'Delayed'), -- Airbus A350-1000
+('CDG', 'JFK', 5, 14, '2025-06-17 16:45:00', 495, 'On Time'), -- Boeing 787-8
+('DXB', 'ORD', 5, 15, '2025-06-18 09:00:00', 840, 'On Time'), -- Boeing 777-300ER
+
+-- American Airlines flights (airline_id = 6)
+('JFK', 'MIA', 6, 16, '2025-06-15 06:30:00', 180, 'On Time'), -- Boeing 787-9
+('ORD', 'LAX', 6, 17, '2025-06-16 13:15:00', 240, 'On Time'), -- Airbus A321neo
+('LAX', 'YYZ', 6, 18, '2025-06-17 17:00:00', 300, 'Cancelled'), -- Boeing 737 MAX 8
+
+-- Air France flights (airline_id = 7)
+('CDG', 'LHR', 7, 19, '2025-06-16 08:45:00', 70, 'On Time'),  -- Airbus A320
+('JFK', 'CDG', 7, 20, '2025-06-17 19:30:00', 420, 'On Time'), -- Boeing 777-200ER
+('CDG', 'CAI', 7, 21, '2025-06-18 10:00:00', 240, 'On Time'), -- Airbus A350-900
+
+-- Turkish Airlines flights (airline_id = 8)
+('LHR', 'JFK', 8, 22, '2025-06-15 15:45:00', 600, 'On Time'), -- Boeing 737 MAX 8 
+('ORD', 'LHR', 8, 23, '2025-06-16 18:30:00', 615, 'On Time'), -- Airbus A321neo
+('JFK', 'LHR', 8, 24, '2025-06-17 22:00:00', 590, 'Delayed'); -- Boeing 787-9 Dreamliner
