@@ -88,8 +88,7 @@ CREATE TABLE ticket
     flight_number VARCHAR(10) NOT NULL,
     seat_number INT NOT NULL,
     isle_id CHAR(1) NOT NULL,
-    airplane_registration VARCHAR(20) NOT NULL,
-    FOREIGN KEY (seat_number, isle_id, airplane_registration) REFERENCES seat(seat_number, isle_id, airplane_registration),
+    FOREIGN KEY (seat_number, isle_id) REFERENCES seat(seat_number, isle_id),
     FOREIGN KEY (passenger_id) REFERENCES passenger(id),
     FOREIGN KEY (airline_name, flight_number) REFERENCES flight(airline_name, flight_number),
     PRIMARY KEY (passenger_id, airline_name, flight_number)
