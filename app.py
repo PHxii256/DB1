@@ -1,10 +1,11 @@
 import os
 import re
+import json
 
 from datetime import datetime, date
 from flask import Flask, flash, redirect, render_template, request, session, jsonify, make_response
 from flask_session import Session
-from helpers import Database
+from helpers import Database, Passenger
 
 # Configure application
 app = Flask(__name__)
@@ -78,34 +79,8 @@ def flight_search():
 
 @app.route("/available_flights", methods=["GET", "POST"])
 def available_flights():
-    if request.method == "GET":
-        # Retrieve data from cookies
-        departure = request.cookies.get("departure")
-        destination = request.cookies.get("destination")
-        depart_date_str = request.cookies.get("depart_date")
-        passengers = request.cookies.get("passengers", type=int)
-
-        if not all([departure, destination, depart_date_str, passengers]):
-            flash("Flight search preferences not found. Please search again.", "warning")
-            return redirect("/flight_search")
-
-        # Calculate a date range for demo filtering (e.g., +-7 days)
-        try:
-            depart_date = datetime.strptime(depart_date_str, "%Y-%m-%d")
-            end_date = depart_date.replace(hour=23, minute=59, second=59)
-        except ValueError:
-            flash("Invalid date in cookies. Please search again.", "warning")
-            return redirect("/flight_search")
-
-        flights = db.execute(
-            "SELECT * FROM flight_details WHERE fromRegion = ? AND toRegion = ? AND departure >= ? AND departure <= ?",
-            [departure, destination, depart_date.strftime("%Y-%m-%d 00:00:00"), end_date.strftime("%Y-%m-%d 23:59:59")]
-        )
-
-        return render_template("availableFlights.html", flights=flights, passengers=passengers)
-
-    else:
-        # After user chooses a flight
+    if request.method == "POST":
+        # Save selected flight info into cookies and redirect to passenger details
         airline = request.form.get('flight_airline')
         flight_number = request.form.get('flight_number')
         from_city = request.form.get('from')
@@ -114,35 +89,83 @@ def available_flights():
         arrival = request.form.get('arrival')
         price = request.form.get('price')
 
-        response_data = {
-            'status': 'success',
-            'data': {
-                'airline': airline,
-                'flight_number': flight_number,
-                'from_city': from_city,
-                'to_city': to_city,
-                'departure': departure,
-                'arrival': arrival,
-                'price': price
-            }
-        }
+        response = make_response(redirect("/passenger_details"))
 
-        return jsonify(response_data)
+        # Store selected flight details in cookies
+        response.set_cookie("selected_flight", json.dumps({
+            'airline': airline,
+            'flight_number': flight_number,
+            'from_city': from_city,
+            'to_city': to_city,
+            'departure': departure,
+            'arrival': arrival,
+            'price': price
+        }))
+
+        return response
+
+    # GET method
+    departure = request.cookies.get("departure")
+    destination = request.cookies.get("destination")
+    depart_date_str = request.cookies.get("depart_date")
+    passengers = request.cookies.get("passengers", type=int)
+
+    if not all([departure, destination, depart_date_str, passengers]):
+        flash("Flight search preferences not found. Please search again.", "warning")
+        return redirect("/flight_search")
+
+    try:
+        depart_date = datetime.strptime(depart_date_str, "%Y-%m-%d")
+        end_date = depart_date.replace(hour=23, minute=59, second=59)
+    except ValueError:
+        flash("Invalid date in cookies. Please search again.", "warning")
+        return redirect("/flight_search")
+
+    flights = db.execute(
+        "SELECT * FROM flight_details WHERE fromRegion = ? AND toRegion = ? AND departure >= ? AND departure <= ?",
+        [departure, destination, depart_date.strftime("%Y-%m-%d 00:00:00"), end_date.strftime("%Y-%m-%d 23:59:59")]
+    )
+
+    return render_template("availableFlights.html", flights=flights, passengers=passengers)
 
 @app.route('/passenger_details', methods=['GET', 'POST'])
 def passenger_details():
-    if request.method == 'GET':
-        """Display a form for user input"""
-        ...
-    else:
-        """Process the form data and store passenger information"""
-        ...
+    if request.method == 'POST':
+        passenger_list = []
+        passenger_count = int(request.form.get("passenger_count", 1))
+
+        for i in range(passenger_count):
+            prefix = f"passengers[{i}]["
+
+            passenger = Passenger(
+                first_name=request.form.get(f"{prefix}firstName]"),
+                last_name=request.form.get(f"{prefix}lastName]"),
+                gender=request.form.get(f"{prefix}gender]"),
+                age_bracket=request.form.get(f"{prefix}ageBracket]"),
+                nationality=request.form.get(f"{prefix}nationality]"),
+                phone=request.form.get(f"{prefix}phone]"),
+                document_type=request.form.get(f"{prefix}documentType]"),
+                document_number=request.form.get(f"{prefix}documentNumber]")
+            )
+            passenger_list.append(passenger)
+
+        passenger_data = [p.to_dict() for p in passenger_list]
+        response = make_response(jsonify(passenger_data))
+        response.set_cookie("passenger_info", json.dumps(passenger_data))
+        return response
+
+    # GET method: just return what's stored in cookies as JSON
+    passenger_count = int(request.cookies.get("passengers", 1))
+    return render_template("personalInfo.html", passenger_count=passenger_count)
 
 @app.route('/select_seats', methods=['GET', 'POST'])
 def select_seats():
     if request.method == 'GET':
         """Load the seat map and display it to the user"""
-        ...
+        seats = db.execute("SELECT * FROM seat WHERE airplane_registration = 'N123DA'")
+        for row in seats:
+            print(row)
+        return render_template("seatsSelect.html")
     else:
         """After the user choosed the prefered seat"""
         ...

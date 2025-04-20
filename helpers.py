@@ -69,3 +69,26 @@ class Database:
         
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
+
+class Passenger:
+    def __init__(self, first_name, last_name, gender, age_bracket, nationality, phone, document_type, document_number):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.gender = gender
+        self.age_bracket = age_bracket
+        self.nationality = nationality
+        self.phone = phone
+        self.document_type = document_type
+        self.document_number = document_number
+
+    def to_dict(self):
+        return {
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "gender": self.gender,
+            "age_bracket": self.age_bracket,
+            "nationality": self.nationality,
+            "phone": self.phone,
+            "document_type": self.document_type,
+            "document_number": self.document_number,
+        }
