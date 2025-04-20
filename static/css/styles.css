@@ -1,12 +1,14 @@
 :root {
   --skywing-blue: #003580;
-  --skywing-gold: #FFB700;
+  --skywing-gold: #ffb700;
   --skywing-light: #0077cc;
   --skywing-dark: #00204a;
+  --skywing-bg: #000000;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--skywing-bg);
   color: #fff;
   line-height: 1.6;
   min-height: 100vh;
@@ -29,17 +31,36 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://t3.ftcdn.net/jpg/00/25/55/90/360_F_25559041_9eJ9EcsR1j2Cd0THikGkclEvs5OLuyxu.jpg') center/cover;
+  background: url("https://t3.ftcdn.net/jpg/00/25/55/90/360_F_25559041_9eJ9EcsR1j2Cd0THikGkclEvs5OLuyxu.jpg")
+    center/cover;
   filter: blur(8px) brightness(0.6);
   transform: scale(1.1);
 }
 
 .airline-header {
-  background: linear-gradient(135deg, var(--skywing-dark) 0%, var(--skywing-blue) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--skywing-dark) 0%,
+    var(--skywing-blue) 100%
+  );
   color: white;
   padding: 1rem 0;
   position: relative;
   z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 37, 128, 0.15);
+}
+
+.airline-header .logo {
+  font-weight: 700;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.airline-header .logo i {
+  color: var(--skywing-gold);
+  margin-right: 10px;
+  font-size: 1.5rem;
 }
 
 .search-container {
@@ -156,18 +177,24 @@ input:-webkit-autofill {
   text-align: center;
 }
 
-.search-btn {
+.search-btn,
+.btn-book {
   background-color: var(--skywing-blue);
   color: white;
   width: 100%;
-  padding: 1rem;
+  padding: 0.75rem;
   border: none;
   border-radius: 8px;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
-.search-btn:hover {
+.search-btn {
+  padding: 1rem;
+}
+
+.search-btn:hover,
+.btn-book:hover {
   background-color: var(--skywing-light);
   transform: translateY(-2px);
 }
@@ -179,15 +206,15 @@ select.form-control {
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  appearance: none; /* For better control across browsers */
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   position: relative;
 }
 
 select.form-control option {
-  background: rgba(0, 53, 128, 0.3); /* Darken background for better contrast */
-  color: rgba(255, 255, 255, 0.9); /* Ensure option text is readable */
+  background: rgba(0, 53, 128, 0.3);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 select.form-control:focus {
@@ -196,14 +223,82 @@ select.form-control:focus {
   box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.25);
 }
 
-/* Fix for hidden dropdown in Firefox */
 select.form-control::-ms-expand {
   display: none;
 }
 
-/* Ensure the input-group behaves correctly */
 .input-group {
   overflow: visible !important;
+}
+
+.airline-footer {
+  background: linear-gradient(
+    135deg,
+    var(--skywing-dark) 0%,
+    var(--skywing-blue) 100%
+  );
+  margin-top: 3rem;
+}
+
+.flight-card {
+  background: rgba(0, 53, 128, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  height: 100%;
+}
+
+.flight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 119, 204, 0.2);
+  border-color: var(--skywing-light);
+}
+
+.flight-card-header {
+  background: rgba(0, 53, 128, 0.2);
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.flight-card-body {
+  padding: 1.5rem;
+}
+
+.flight-route {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.flight-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.flight-detail-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.flight-detail-value {
+  color: white;
+  font-weight: 600;
+}
+
+.flight-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--skywing-gold);
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.recommended-header {
+  color: var(--skywing-gold);
 }
 
 @media (max-width: 768px) {
@@ -212,5 +307,9 @@ select.form-control::-ms-expand {
     padding: 1.5rem;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+  }
+
+  .flight-card {
+    margin-bottom: 1.5rem;
   }
 }
