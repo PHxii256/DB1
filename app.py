@@ -2,7 +2,7 @@ import os
 import re
 
 from datetime import datetime, date
-from flask import Flask, flash, redirect, render_template, request, session, jsonify
+from flask import Flask, flash, redirect, render_template, request, session, jsonify, make_response
 from flask_session import Session
 from helpers import Database
 
@@ -30,61 +30,104 @@ def index():
     """Show the homepage"""
     return render_template('home.html')
 
-@app.route("/fight-search", methods=["GET", "POST"])
+@app.route("/flight_search", methods=["GET", "POST"])
 def flight_search():
-    if request.method == 'POST':
-        """After the user entered his preferences"""
-        departure = request.form.get('departure')
-        destination = request.form.get('destination')
-        depart_date_str = request.form.get('departDate')
-        passengers = request.form.get('passengers', type=int)
+    values = {
+        "departure": '',
+        "destination": '',
+        "depart_date_str": date.today().isoformat(),
+        "passengers": 1,
+        "places": list(db.execute("SELECT DISTINCT(region) FROM location"))
+    }
 
-        # Convert date string to date object
+    if request.method == "POST":
+        values.update({
+            "departure": request.form.get("departure", "").strip(),
+            "destination": request.form.get("destination", "").strip(),
+            "depart_date_str": request.form.get("departDate", "").strip(),
+            "passengers": request.form.get("passengers", type=int)
+        })
+
         try:
-            depart_date = datetime.strptime(depart_date_str, "%Y-%m-%d").date()
+            depart_date = datetime.strptime(values["depart_date_str"], "%Y-%m-%d").date()
         except (ValueError, TypeError):
-            return jsonify({'error': 'Invalid date format'}), 400
-        
-        # Validate required fields
-        if not all([departure, destination, depart_date, passengers]):
-            return jsonify({'error': 'Missing required fields'}), 400
-            
-        if departure == destination:
-            return jsonify({'error': 'Departure and destination cannot be the same'}), 400
-            
-        if passengers <= 0:
-            return jsonify({'error': 'Passenger count must be at least 1'}), 400
-        
-        # Here you would typically:
-        # 1. Query your database for available flights
-        # 2. Process the results
-        # 3. Return the flight options
-        
-        # For demonstration, we'll just return the received data
-        response_data = {
-            'status': 'success',
-            'data': {
-                'departure': departure,
-                'destination': destination,
-                'depart_date': depart_date_str,
-                'passengers': passengers
-            }
-        }
-        
-        return jsonify(response_data)
-    
-    """Show the flight search page"""
-    places = list(db.execute("SELECT region FROM location"))
-    return render_template('flightSearch.html', places=places, today=date.today())
+            flash("Invalid date format", "warning")
+            return render_template("flightSearch.html", values=values)
+
+        if not all([values["departure"], values["destination"], depart_date, values["passengers"]]):
+            flash("Missing required fields", "warning")
+            return render_template("flightSearch.html", values=values)
+
+        if values["departure"] == values["destination"]:
+            flash("Departure and destination cannot be the same", "warning")
+            return render_template("flightSearch.html", values=values)
+
+        if values["passengers"] <= 0:
+            flash("Passenger count must be at least 1", "warning")
+            return render_template("flightSearch.html", values=values)
+
+        # Store in cookies and redirect to available_flights
+        resp = make_response(redirect("/available_flights"))
+        resp.set_cookie("departure", values["departure"])
+        resp.set_cookie("destination", values["destination"])
+        resp.set_cookie("depart_date", values["depart_date_str"])
+        resp.set_cookie("passengers", str(values["passengers"]))
+        return resp
+
+    return render_template("flightSearch.html", values=values)
 
 @app.route("/available_flights", methods=["GET", "POST"])
 def available_flights():
     if request.method == "GET":
-        """Show available flights depending on the user preference"""
-        return render_template('flightsRecommendations.html')
+        # Retrieve data from cookies
+        departure = request.cookies.get("departure")
+        destination = request.cookies.get("destination")
+        depart_date_str = request.cookies.get("depart_date")
+        passengers = request.cookies.get("passengers", type=int)
+
+        if not all([departure, destination, depart_date_str, passengers]):
+            flash("Flight search preferences not found. Please search again.", "warning")
+            return redirect("/flight_search")
+
+        # Calculate a date range for demo filtering (e.g., +-7 days)
+        try:
+            depart_date = datetime.strptime(depart_date_str, "%Y-%m-%d")
+            end_date = depart_date.replace(hour=23, minute=59, second=59)
+        except ValueError:
+            flash("Invalid date in cookies. Please search again.", "warning")
+            return redirect("/flight_search")
+
+        flights = db.execute(
+            "SELECT * FROM flight_details WHERE fromRegion = ? AND toRegion = ? AND departure >= ? AND departure <= ?",
+            [departure, destination, depart_date.strftime("%Y-%m-%d 00:00:00"), end_date.strftime("%Y-%m-%d 23:59:59")]
+        )
+
+        return render_template("availableFlights.html", flights=flights, passengers=passengers)
+
     else:
-        """After the user chosed a flight"""
-        ...
+        # After user chooses a flight
+        airline = request.form.get('flight_airline')
+        flight_number = request.form.get('flight_number')
+        from_city = request.form.get('from')
+        to_city = request.form.get('to')
+        departure = request.form.get('departure')
+        arrival = request.form.get('arrival')
+        price = request.form.get('price')
+
+        response_data = {
+            'status': 'success',
+            'data': {
+                'airline': airline,
+                'flight_number': flight_number,
+                'from_city': from_city,
+                'to_city': to_city,
+                'departure': departure,
+                'arrival': arrival,
+                'price': price
+            }
+        }
+
+        return jsonify(response_data)
 
 @app.route('/passenger_details', methods=['GET', 'POST'])
 def passenger_details():

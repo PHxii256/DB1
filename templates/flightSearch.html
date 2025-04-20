@@ -1,5 +1,7 @@
-{% extends "layout.html" %} {% block title %}Search{% endblock %} {% block style
-%}flightSearch.css{% endblock %} {% block body %}
+{% extends "layout.html" %}
+{% block title %}Search{% endblock %}
+
+{% block body %}
 
 <script src="/static/js/passengersCount.js"></script>
 <script src="/static/js/formInputStyle.js"></script>
@@ -20,9 +22,11 @@
               <i class="fas fa-plane-departure"></i>
             </span>
             <select id="departure" name="departure" class="form-control">
-              <option selected disabled>Select a departure city</option>
-              {% for place in places %}
-              <option value="{{ place[0] }}">{{ place[0] }}</option>
+              <option disabled {% if not values.departure %}selected{% endif %}>Select a departure city</option>
+              {% for place in values.places %}
+              <option value="{{ place[0] }}" {% if place[0] == values.departure %}selected{% endif %}>
+                {{ place[0] }}
+              </option>
               {% endfor %}
             </select>
           </div>
@@ -37,9 +41,11 @@
               <i class="fas fa-plane-arrival"></i>
             </span>
             <select id="destination" name="destination" class="form-control">
-              <option selected disabled>Select a destination city</option>
-              {% for place in places %}
-              <option value="{{ place[0] }}">{{ place[0] }}</option>
+              <option disabled {% if not values.destination %}selected{% endif %}>Select a destination city</option>
+              {% for place in values.places %}
+              <option value="{{ place[0] }}" {% if place[0] == values.destination %}selected{% endif %}>
+                {{ place[0] }}
+              </option>
               {% endfor %}
             </select>
           </div>
@@ -54,8 +60,8 @@
             class="form-control"
             id="departDate"
             name="departDate"
-            value="{{ today }}"
-            min="{{ today }}"
+            value="{{ values.depart_date_str }}"
+            min="{{ values.depart_date_str }}"
           />
         </div>
       </div>
@@ -67,12 +73,12 @@
             <button type="button" class="counter-btn" id="decreasePassengers">
               <i class="fas fa-minus"></i>
             </button>
-            <div class="counter-value" id="passengersCount">1</div>
+            <div class="counter-value" id="passengersCount">{{ values.passengers }}</div>
             <button type="button" class="counter-btn" id="increasePassengers">
               <i class="fas fa-plus"></i>
             </button>
           </div>
-          <input type="hidden" id="passengers" name="passengers" value="1" />
+          <input type="hidden" id="passengers" name="passengers" value="{{ values.passengers }}" />
         </div>
       </div>
 

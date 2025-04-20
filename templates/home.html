@@ -1,2 +1,17 @@
 {% extends "layout.html" %} {% block title %}Home{% endblock %} {% block body %}
-Hello {% endblock %}
+<div class="search-container">
+  <div class="search-header">
+    <h1>Welcome to SkyWing Airlines</h1>
+    <p class="text-white-50 mb-4">
+      Discover the world with our premium flight services. Find the best deals
+      and fly in comfort.
+    </p>
+  </div>
+
+  <div class="text-center">
+    <a href="/flight_search" class="btn search-btn btn-lg">
+      <i class="fas fa-search mr-2"></i> Search for a Flight
+    </a>
+  </div>
+</div>
+{% endblock %}
