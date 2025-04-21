@@ -1,6 +1,5 @@
-{% extends "layout.html" %} 
-{% block title %}Available Flights{% endblock %} 
-{% block body %}
+{% extends "layout.html" %} {% block title %}Available Flights{% endblock %} {%
+block body %}
 <div class="search-container">
   <div class="container my-5">
     <div class="text-center mb-5">
@@ -11,7 +10,8 @@
     </div>
 
     <div class="row g-4" id="flight-list">
-      {% for flight in flights %}
+      {% set flights_available = false %} {% for flight in flights %} {% set
+      flights_available = true %}
       <div class="flight-card">
         <div class="flight-card-header">
           <h5 class="flight-route">{{ flight.from }} → {{ flight.to }}</h5>
@@ -56,10 +56,16 @@
           </div>
           <div class="flight-detail">
             <span class="flight-detail-label">First Class:</span>
-            <span class="flight-detail-value">${{ flight.firstClassPrice }}</span>
+            <span class="flight-detail-value"
+              >${{ flight.firstClassPrice }}</span
+            >
           </div>
           <form method="POST" action="/available_flights">
-            <input type="hidden" name="flight_airline" value="{{ flight.airline }}" />
+            <input
+              type="hidden"
+              name="flight_airline"
+              value="{{ flight.airline }}"
+            />
             <input
               type="hidden"
               name="flight_number"
@@ -73,9 +79,21 @@
               value="{{ flight.departure }}"
             />
             <input type="hidden" name="arrival" value="{{ flight.arrival }}" />
-            <input type="hidden" name="economy_price" value="{{ flight.economyPrice }}" />
-            <input type="hidden" name="business_price" value="{{ flight.businessPrice }}" />
-            <input type="hidden" name="first_class_price" value="{{ flight.firstClassPrice }}" />
+            <input
+              type="hidden"
+              name="economy_price"
+              value="{{ flight.economyPrice }}"
+            />
+            <input
+              type="hidden"
+              name="business_price"
+              value="{{ flight.businessPrice }}"
+            />
+            <input
+              type="hidden"
+              name="first_class_price"
+              value="{{ flight.firstClassPrice }}"
+            />
 
             <!-- CSRF token for security (Django/Flask/etc.) -->
             {% if csrf_token %}
@@ -87,6 +105,12 @@
             </button>
           </form>
         </div>
+      </div>
+      {% else %}
+      <div class="col-12 text-center">
+        <h4 class="text-white">
+          There are no flights available for these preferences
+        </h4>
       </div>
       {% endfor %}
     </div>

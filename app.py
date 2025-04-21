@@ -108,7 +108,7 @@ def available_flights():
 
         return response
 
-    # GET method remains exactly the same
+    # GET method - now checks for available seats
     departure = request.cookies.get("departure")
     destination = request.cookies.get("destination")
     depart_date_str = request.cookies.get("depart_date")
@@ -126,11 +126,22 @@ def available_flights():
         return redirect("/flight_search")
 
     flights = db.execute(
-        "SELECT * FROM flight_details WHERE fromRegion = ? AND toRegion = ? AND departure >= ? AND departure <= ?",
-        [departure, destination, depart_date.strftime("%Y-%m-%d 00:00:00"), end_date.strftime("%Y-%m-%d 23:59:59")]
+        """SELECT * FROM flight_details 
+        WHERE fromRegion = ? 
+        AND toRegion = ? 
+        AND departure >= ? 
+        AND departure <= ?
+        AND available_seats >= ?""",  # Only flights with enough seats
+        [
+            departure, 
+            destination, 
+            depart_date.strftime("%Y-%m-%d 00:00:00"), 
+            end_date.strftime("%Y-%m-%d 23:59:59"),
+            passengers  # Minimum required available seats
+        ]
     )
 
-    return render_template("availableFlights.html", flights=flights, passengers=passengers)
+    return render_template("availableFlights.html", flights=flights)
 
 @app.route('/passenger_details', methods=['GET', 'POST'])
 def passenger_details():
@@ -165,11 +176,22 @@ def passenger_details():
 @app.route('/select_seats', methods=['GET', 'POST'])
 def select_seats():
     if request.method == 'GET':
-        """Load the seat map and display it to the user"""
         seats = db.execute("SELECT * FROM seat WHERE airplane_registration = 'N123DA'")
-        for row in seats:
-            print(row)
-        return render_template("seatsSelect.html")
-    else:
-        """After the user choosed the prefered seat"""
-        ...
+
+        rows = {}
+        for seat in seats:
+            _, row_num, col, seat_class, available = seat
+            if seat_class not in rows:
+                rows[seat_class] = {}
+            if row_num not in rows[seat_class]:
+                rows[seat_class][row_num] = {}
+            rows[seat_class][row_num][col] = available
+
+        # Read flight info from cookie
+        selected_flight_json = request.cookies.get("selected_flight")
+        if selected_flight_json:
+            values = json.loads(selected_flight_json)
+        else:
+            values = {}
+
+        return render_template("seatsSelect.html", seat_map=rows, values=values)

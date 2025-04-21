@@ -67,7 +67,7 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -76,46 +76,51 @@ body {
   background: rgba(16, 25, 40, 0.7);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 2rem;
-  width: 100%;
-  max-width: 800px;
-  margin: 100px auto;
+  padding: 2.5rem;
+  width: 90%;
+  max-width: 1000px;
+  min-width: 300px;
+  margin: 80px auto;
   backdrop-filter: blur(20px) saturate(200%);
   -webkit-backdrop-filter: blur(20px) saturate(200%);
   box-shadow: 0 8px 32px rgba(0, 37, 128, 0.3);
+  transition: all 0.3s ease;
+}
+
+.search-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.search-header h1 {
+  color: var(--skywing-gold);
+  margin-bottom: 0.75rem;
+  font-size: 2.2rem;
 }
 
 ::placeholder {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-.search-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.search-header h1 {
-  color: var(--skywing-gold);
-  margin-bottom: 0.5rem;
-}
-
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .form-label {
   color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.05rem;
 }
 
 .form-control {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff !important;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+  padding: 0.85rem 1.25rem;
+  border-radius: 10px;
   transition: all 0.3s ease;
+  font-size: 1rem;
 }
 
 .form-control:focus {
@@ -140,16 +145,17 @@ input:-webkit-autofill {
 .suggestions {
   background: rgba(0, 53, 128, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+  border-radius: 10px;
   margin-top: 0.5rem;
   backdrop-filter: blur(5px);
 }
 
 .suggestion-item {
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.25rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
   color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
 }
 
 .suggestion-item:hover {
@@ -160,30 +166,32 @@ input:-webkit-autofill {
   display: flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 0.5rem;
+  border-radius: 10px;
+  padding: 0.75rem;
 }
 
 .counter-btn {
   background: none;
   border: none;
   color: var(--skywing-gold);
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
+  width: 42px;
+  height: 42px;
+  font-size: 1.3rem;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
+  border-radius: 6px;
 }
 
 .counter-btn:hover {
-  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .counter-value {
   color: #fff;
-  margin: 0 1rem;
+  margin: 0 1.25rem;
   min-width: 30px;
   text-align: center;
+  font-size: 1.1rem;
 }
 
 .search-btn,
@@ -192,24 +200,25 @@ input:-webkit-autofill {
   background-color: var(--skywing-blue);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 500;
   transition: all 0.3s ease;
+  font-size: 1.1rem;
 }
 
 .search-btn {
-  padding: 1rem;
+  padding: 1.1rem;
   width: 100%;
 }
 
 .btn-book {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem;
 }
 
 .confirm-btn {
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
+  padding: 1.1rem 2.2rem;
+  font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
   width: 100%;
@@ -226,13 +235,12 @@ input:-webkit-autofill {
   box-shadow: 0 5px 15px rgba(0, 119, 204, 0.3);
 }
 
-/* Ensuring select dropdown options are visible */
 select.form-control {
   background: rgba(255, 255, 255, 0.1) !important;
   color: #fff !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+  padding: 0.85rem 1.25rem;
+  border-radius: 10px;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -284,26 +292,26 @@ select.form-control::-ms-expand {
 
 .flight-card-header {
   background: rgba(0, 53, 128, 0.2);
-  padding: 1rem;
+  padding: 1.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .flight-card-body {
-  padding: 1.5rem;
+  padding: 1.75rem;
 }
 
 .flight-route {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: white;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .flight-detail {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
 }
 
 .flight-detail-label {
@@ -317,24 +325,25 @@ select.form-control::-ms-expand {
 }
 
 .flight-price {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--skywing-gold);
-  margin: 1.5rem 0;
+  margin: 1.75rem 0;
   text-align: center;
 }
 
 .recommended-header {
   color: var(--skywing-gold);
+  font-size: 1.5rem;
 }
 
 .flight-info {
   display: flex;
   justify-content: space-between;
   background: rgba(0, 53, 128, 0.2);
-  padding: 1.5rem;
+  padding: 1.75rem;
   border-radius: 12px;
-  margin: 2rem 0;
+  margin: 2.5rem 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -344,31 +353,35 @@ select.form-control::-ms-expand {
 
 .info-label {
   color: var(--skywing-gold);
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .info-value {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 
 .seat-map {
   background: rgba(0, 53, 128, 0.1);
   border-radius: 15px;
-  padding: 2rem;
+  padding: 2.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 2rem 0;
+  margin: 2.5rem 0;
 }
 
 .seat-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
 }
 
 .seat-row {
-  display: contents;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .seat {
@@ -376,7 +389,7 @@ select.form-control::-ms-expand {
   height: var(--seat-size);
   background: rgba(255, 255, 255, 0.05);
   border: 2px solid var(--skywing-gold);
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -419,59 +432,101 @@ select.form-control::-ms-expand {
   background: rgba(255, 183, 0, 0.1);
 }
 
-.seat.window-seat {
-  border-color: #66ccff;
-  box-shadow: 0 0 8px rgba(102, 204, 255, 0.5);
-}
-
 .row-label {
-  grid-column: 1 / -1;
   text-align: center;
   color: var(--skywing-gold);
   font-weight: 600;
-  margin: 1rem 0;
+  margin: 1.25rem 0;
+  font-size: 1.1rem;
 }
 
 .summary-panel {
   background: rgba(0, 53, 128, 0.2);
-  padding: 2rem;
+  padding: 2.5rem;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .selected-seats {
-  margin: 1.5rem 0;
-  padding: 1rem;
+  margin: 1.75rem 0;
+  padding: 1.25rem;
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .price-summary {
-  font-size: 1.2rem;
-  margin: 1.5rem 0;
+  font-size: 1.3rem;
+  margin: 1.75rem 0;
 }
 
 .price-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .total-price {
   color: var(--skywing-gold);
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
+}
+
+@media (max-width: 992px) {
+  .search-container {
+    width: 92%;
+    max-width: 850px;
+    padding: 2rem;
+  }
+  
+  .flight-info {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  
+  .info-item {
+    flex: 1 1 45%;
+  }
 }
 
 @media (max-width: 768px) {
   .search-container {
-    margin: 100px 15px;
-    padding: 1.5rem;
+    width: 95%;
+    margin: 80px auto;
+    padding: 1.75rem;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
   }
-
+  
+  .container {
+    padding: 15px;
+  }
+  
   .flight-card {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+  
+  .seat {
+    width: 42px;
+    height: 42px;
+    font-size: 0.95rem;
+  }
+  
+  .flight-info {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .info-item {
+    flex: 1 1 100%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .search-container {
+    max-width: 1100px;
+  }
+  
+  .container {
+    max-width: 1500px;
   }
 }
