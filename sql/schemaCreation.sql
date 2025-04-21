@@ -1,3 +1,10 @@
+-- Clear the schema (if needed)
+
+USE master;
+DROP DATABASE AirReservationDB;
+
+-- Database Schema Creation
+
 CREATE DATABASE AirReservationDB;
 
 USE AirReservationDB;
@@ -73,7 +80,9 @@ CREATE TABLE flight
     -- in minutes   
     arrival_time AS DATEADD(MINUTE, duration, departure_time) PERSISTED,
     status VARCHAR(10) CHECK (status IN ('On Time', 'Delayed', 'Cancelled')),
-    base_price SMALLINT NOT NULL,
+    economy_price SMALLINT NOT NULL,
+    business_price SMALLINT NOT NULL,
+    first_class_price SMALLINT NOT NULL,
     PRIMARY KEY (airline_name, flight_number),
     FOREIGN KEY (from_airport_code) REFERENCES airport(code),
     FOREIGN KEY (to_airport_code) REFERENCES airport(code),
@@ -88,7 +97,8 @@ CREATE TABLE ticket
     flight_number VARCHAR(10) NOT NULL,
     seat_number INT NOT NULL,
     isle_id CHAR(1) NOT NULL,
-    FOREIGN KEY (seat_number, isle_id) REFERENCES seat(seat_number, isle_id),
+    airplane_registration VARCHAR(20) NOT NULL,
+    FOREIGN KEY (seat_number, isle_id, airplane_registration) REFERENCES seat(seat_number, isle_id, airplane_registration),
     FOREIGN KEY (passenger_id) REFERENCES passenger(id),
     FOREIGN KEY (airline_name, flight_number) REFERENCES flight(airline_name, flight_number),
     PRIMARY KEY (passenger_id, airline_name, flight_number)
@@ -109,7 +119,9 @@ AS
         f.departure_time AS departure,
         f.arrival_time AS arrival,
         f.duration,
-        f.base_price AS "basePrice"
+        f.economy_price AS "economyPrice",
+        f.business_price AS "businessPrice",
+        f.first_class_price AS "firstClassPrice"
     FROM
         flight f
         JOIN

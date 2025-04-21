@@ -87,7 +87,9 @@ def available_flights():
         to_city = request.form.get('to')
         departure = request.form.get('departure')
         arrival = request.form.get('arrival')
-        price = request.form.get('price')
+        economy_price = request.form.get('economy_price')
+        business_price = request.form.get('business_price')
+        first_class_price = request.form.get('first_class_price')
 
         response = make_response(redirect("/passenger_details"))
 
@@ -99,12 +101,14 @@ def available_flights():
             'to_city': to_city,
             'departure': departure,
             'arrival': arrival,
-            'price': price
+            'economy_price': economy_price,
+            'business_price': business_price,
+            'first_class_price': first_class_price
         }))
 
         return response
 
-    # GET method
+    # GET method remains exactly the same
     departure = request.cookies.get("departure")
     destination = request.cookies.get("destination")
     depart_date_str = request.cookies.get("depart_date")
