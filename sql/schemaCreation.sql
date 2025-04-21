@@ -23,7 +23,7 @@ CREATE TABLE passenger
     age_bracket VARCHAR(6) CHECK (age_bracket IN ('Infant', 'Child', 'Adult')) NOT NULL,
     nationality VARCHAR(30) NOT NULL,
     id_doc_type VARCHAR(20) CHECK (id_doc_type IN ('Driver License', 'Passport', 'National ID')) NOT NULL,
-    id_doc_num SMALLINT NOT NULL
+    id_doc_num BIGINT NOT NULL
 );
 
 CREATE TABLE location
