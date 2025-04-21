@@ -1,5 +1,6 @@
-{% extends "layout.html" %} {% block title %}Available Flights{% endblock %} {%
-block body %}
+{% extends "layout.html" %} 
+{% block title %}Available Flights{% endblock %} 
+{% block body %}
 <div class="search-container">
   <div class="container my-5">
     <div class="text-center mb-5">
@@ -45,7 +46,18 @@ block body %}
             <span class="flight-detail-label">Flight #:</span>
             <span class="flight-detail-value">{{ flight.flightNumber }}</span>
           </div>
-          <div class="flight-price">{{ flight.basePrice }}$</div>
+          <div class="flight-detail">
+            <span class="flight-detail-label">Economy:</span>
+            <span class="flight-detail-value">${{ flight.economyPrice }}</span>
+          </div>
+          <div class="flight-detail">
+            <span class="flight-detail-label">Business:</span>
+            <span class="flight-detail-value">${{ flight.businessPrice }}</span>
+          </div>
+          <div class="flight-detail">
+            <span class="flight-detail-label">First Class:</span>
+            <span class="flight-detail-value">${{ flight.firstClassPrice }}</span>
+          </div>
           <form method="POST" action="/available_flights">
             <input type="hidden" name="flight_airline" value="{{ flight.airline }}" />
             <input
@@ -61,7 +73,9 @@ block body %}
               value="{{ flight.departure }}"
             />
             <input type="hidden" name="arrival" value="{{ flight.arrival }}" />
-            <input type="hidden" name="price" value="{{ flight.basePrice }}" />
+            <input type="hidden" name="economy_price" value="{{ flight.economyPrice }}" />
+            <input type="hidden" name="business_price" value="{{ flight.businessPrice }}" />
+            <input type="hidden" name="first_class_price" value="{{ flight.firstClassPrice }}" />
 
             <!-- CSRF token for security (Django/Flask/etc.) -->
             {% if csrf_token %}
