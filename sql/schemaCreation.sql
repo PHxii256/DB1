@@ -121,7 +121,19 @@ AS
         f.duration,
         f.economy_price AS "economyPrice",
         f.business_price AS "businessPrice",
-        f.first_class_price AS "firstClassPrice"
+        f.first_class_price AS "firstClassPrice",
+        (
+            SELECT COUNT(*) 
+            FROM seat s 
+            WHERE s.airplane_registration = f.airplane_registration 
+            AND s.is_available = 1
+        ) - 
+        (
+            SELECT COUNT(*) 
+            FROM ticket t 
+            WHERE t.airline_name = f.airline_name 
+            AND t.flight_number = f.flight_number
+        ) AS available_seats
     FROM
         flight f
         JOIN
