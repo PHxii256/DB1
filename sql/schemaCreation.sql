@@ -172,3 +172,6 @@ AS
             AND s.seat_number = t.seat_number
             AND s.isle_id = t.isle_id
             AND s.airplane_registration = t.airplane_registration;
+
+SELECT * FROM passenger;
+SELECT * FROM ticket;

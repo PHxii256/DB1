@@ -324,89 +324,65 @@ def review_booking():
         return redirect(url_for('passenger_details'))
     
     passengers = json.loads(passenger_info)
+
+    print(passengers)
+
+    # Create passenger records and collect their IDs
+    for passenger in passengers:
+        # Insert passenger data - now properly formatted as tuple
+        db.execute(
+            """INSERT INTO passenger 
+            (first_name, last_name, phone_number, gender, age_bracket, 
+            nationality, id_doc_type, id_doc_num) 
+            OUTPUT INSERTED.id
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                passenger['first_name'],
+                passenger['last_name'],
+                passenger['phone'],
+                passenger['gender'],
+                passenger['age_bracket'],
+                passenger['nationality'],
+                passenger['document_type'],
+                passenger['document_number']
+            )
+        )
+        
+        passenger_id_query = db.execute("SELECT ID FROM passenger WHERE id_doc_type = ? AND id_doc_num = ?", (passenger['document_type'], passenger['document_number']))
+        
+        passenger_id = 0
+        for row in passenger_id_query:
+            passenger_id = row[0]
+        
+        print(passenger_id)
+        
+        # Get seat number and isle from selected_seat (format like "12A")
+        seat_number = int(passenger['selected_seat'][:-1])
+        isle_id = passenger['selected_seat'][-1]
+        
+        # Create ticket record - properly formatted as tuple
+        db.execute(
+            """INSERT INTO ticket 
+            (passenger_id, airline_name, flight_number, 
+            seat_number, isle_id, airplane_registration) 
+            VALUES (?, ?, ?, ?, ?, ?)""",
+            (
+                passenger_id,
+                flight_data['airline'],
+                flight_data['flight_number'],
+                seat_number,
+                isle_id,
+                flight_data.get('airplane_registration', '')
+            )
+        )
     
-    # Calculate total price
-    total_price = sum(float(p.get('seat_price', 0)) for p in passengers)
-    
-    if request.method == 'POST':
-        ...
-        # try:
-        #     # Begin transaction
-        #     db.execute("BEGIN TRANSACTION")
-            
-        #     # Create passenger records and collect their IDs
-        #     for passenger in passengers:
-        #         # Insert passenger data - now properly formatted as tuple
-        #         result = db.execute(
-        #             """INSERT INTO passenger 
-        #             (first_name, last_name, phone_number, gender, age_bracket, 
-        #             nationality, id_doc_type, id_doc_num) 
-        #             OUTPUT INSERTED.id
-        #             VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-        #             (
-        #                 passenger['first_name'],
-        #                 passenger['last_name'],
-        #                 passenger['phone'],
-        #                 passenger['gender'],
-        #                 passenger['age_bracket'],
-        #                 passenger['nationality'],
-        #                 passenger['document_type'],
-        #                 passenger['document_number']
-        #             )
-        #         )
-                
-        #         # Convert generator to list
-        #         # result_list = list(result)
-        #         # if not result_list:
-        #         #     raise Exception("Failed to insert passenger record - no ID returned")
-                
-        #         passenger_id_query = db.execute("SELECT ID FROM passenger WHERE id_doc_type = ? AND id_doc_num = ?", (passenger['document_type'], passenger['document_number']))
-                
-        #         passenger_id = 0
-        #         for row in passenger_id_query:
-        #             passenger_id = row[0]
-                
-        #         print(passenger_id)
-                
-        #         # Get seat number and isle from selected_seat (format like "12A")
-        #         seat_number = int(passenger['selected_seat'][:-1])
-        #         isle_id = passenger['selected_seat'][-1]
-                
-        #         # Create ticket record - properly formatted as tuple
-        #         db.execute(
-        #             """INSERT INTO ticket 
-        #             (passenger_id, airline_name, flight_number, 
-        #             seat_number, isle_id, airplane_registration) 
-        #             VALUES (?, ?, ?, ?, ?, ?)""",
-        #             (
-        #                 passenger_id,
-        #                 flight_data['airline'],
-        #                 flight_data['flight_number'],
-        #                 seat_number,
-        #                 isle_id,
-        #                 flight_data.get('airplane_registration', '')
-        #             )
-        #         )
-            
-        #     # Commit transaction if all operations succeeded
-        #     db.execute("COMMIT TRANSACTION")
-            
-        #     # Clear cookies after successful booking
-        #     response = make_response(redirect("/confirmation"))
-        #     response.delete_cookie("selected_flight")
-        #     response.delete_cookie("passenger_info")
-        #     response.delete_cookie("departure")
-        #     response.delete_cookie("destination")
-        #     response.delete_cookie("depart_date")
-        #     response.delete_cookie("passengers")
-        #     return response
-            
-        # except Exception as e:
-        #     # Rollback transaction on error
-        #     db.execute("ROLLBACK TRANSACTION")
-        #     flash(f"An error occurred while processing your booking: {str(e)}", "error")
-        #     return redirect(url_for('review_booking'))
-    
-    # GET method - show the home page
-    flash("NOT REGISTERED", 'warining')
-    return redirect("/")
+    # Clear cookies after successful booking
+    flash("NOT REGISTERED")
+    response = make_response(redirect("/"))
+    response.delete_cookie("selected_flight")
+    response.delete_cookie("passenger_info")
+    response.delete_cookie("departure")
+    response.delete_cookie("destination")
+    response.delete_cookie("depart_date")
+    response.delete_cookie("passengers")
+    return response
