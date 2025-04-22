@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block title %}Confirm Booking{% endblock %}
+{% block body %}
+<div class="search-container">
+  <div class="search-header">
+    <h1>Review Your Booking</h1>
+    <p class="text-white-50 mb-4">
+      Please review your flight details and passenger information before confirming your booking.
+    </p>
+  </div>
+
+  <div class="flight-info">
+    <div class="info-item">
+      <div class="info-label">Flight Number</div>
+      <div class="info-value">{{ flight_data.flight_number }}</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Airline</div>
+      <div class="info-value">{{ flight_data.airline }}</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Departure</div>
+      <div class="info-value">{{ flight_data.departure }}</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Arrival</div>
+      <div class="info-value">{{ flight_data.arrival }}</div>
+    </div>
+  </div>
+
+  <div class="summary-panel">
+    <h2 class="recommended-header mb-4">Passenger Details</h2>
+    
+    {% for passenger in passengers %}
+    <div class="passenger-selection-header mb-4">
+      <h3>Passenger {{ loop.index }}</h3>
+      <div class="passenger-details">
+        <div class="passenger-detail">
+          <div class="passenger-detail-label">Name</div>
+          <div class="passenger-detail-value">{{ passenger.first_name }} {{ passenger.last_name }}</div>
+        </div>
+        <div class="passenger-detail">
+          <div class="passenger-detail-label">Gender</div>
+          <div class="passenger-detail-value">{{ passenger.gender }}</div>
+        </div>
+        <div class="passenger-detail">
+          <div class="passenger-detail-label">Age Bracket</div>
+          <div class="passenger-detail-value">{{ passenger.age_bracket }}</div>
+        </div>
+        <div class="passenger-detail">
+          <div class="passenger-detail-label">Seat</div>
+          <div class="passenger-detail-value">{{ passenger.selected_seat }} ({{ passenger.seat_class }})</div>
+        </div>
+        <div class="passenger-detail">
+          <div class="passenger-detail-label">Seat Price</div>
+          <div class="passenger-detail-value">${{ "%.2f"|format(passenger.seat_price) }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="price-summary">
+      <div class="price-row">
+        <span>Subtotal:</span>
+        <span>${{ "%.2f"|format(total_price) }}</span>
+      </div>
+      <div class="price-row">
+        <span>Taxes & Fees:</span>
+        <span>$0.00</span>
+      </div>
+      <div class="price-row total-price">
+        <span>Total:</span>
+        <span>${{ "%.2f"|format(total_price) }}</span>
+      </div>
+    </div>
+
+    <form method="POST">
+      <button type="submit" class="confirm-btn">
+        <i class="fas fa-check-circle mr-2"></i> Confirm Booking
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

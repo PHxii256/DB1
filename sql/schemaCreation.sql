@@ -123,15 +123,15 @@ AS
         f.business_price AS "businessPrice",
         f.first_class_price AS "firstClassPrice",
         (
-            SELECT COUNT(*) 
-            FROM seat s 
-            WHERE s.airplane_registration = f.airplane_registration 
+            SELECT COUNT(*)
+        FROM seat s
+        WHERE s.airplane_registration = f.airplane_registration
             AND s.is_available = 1
         ) - 
         (
-            SELECT COUNT(*) 
-            FROM ticket t 
-            WHERE t.airline_name = f.airline_name 
+            SELECT COUNT(*)
+        FROM ticket t
+        WHERE t.airline_name = f.airline_name
             AND t.flight_number = f.flight_number
         ) AS available_seats
     FROM
@@ -146,3 +146,29 @@ AS
         location to_loc ON to_airport.location_id = to_loc.id
         JOIN
         airline al ON f.airline_name = al.airline_name;
+
+CREATE VIEW FlightSeatAvailability
+AS
+    SELECT
+        f.airline_name,
+        f.flight_number,
+        s.seat_number,
+        s.isle_id,
+        s.class,
+        s.is_available AS is_seat_functional, -- Original column from seat table
+        CASE 
+        WHEN s.is_available = 0 THEN 0  -- Seat is not functional
+        WHEN t.passenger_id IS NULL THEN 1  -- Seat is functional and not booked
+        ELSE 0  -- Seat is booked
+    END AS is_available
+    -- New calculated availability
+    FROM
+        flight f
+        JOIN
+        seat s ON f.airplane_registration = s.airplane_registration
+        LEFT JOIN
+        ticket t ON f.airline_name = t.airline_name
+            AND f.flight_number = t.flight_number
+            AND s.seat_number = t.seat_number
+            AND s.isle_id = t.isle_id
+            AND s.airplane_registration = t.airplane_registration;
