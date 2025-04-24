@@ -1,0 +1,146 @@
+{% extends "layout.html" %}
+{% block title %} Select Seats {% endblock %}
+{% block body %}
+
+<script src="/static/js/seatSelect.js"></script>
+
+<div class="container my-5">
+  <div class="search-container">
+    <div class="search-header">
+      <h1>Select Your Seats</h1>
+      <p class="text-white-50">Choose the perfect seat for each passenger</p>
+    </div>
+
+    <!-- Passenger Progress Indicator -->
+    <div class="passenger-progress">
+      {% for i in range(total_passengers) %}
+      <div
+        class="progress-step {% if i == passenger_idx %}active{% endif %} {% if i < passenger_idx %}completed{% endif %}"
+      >
+        {{ i + 1 }}
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Current Passenger Info -->
+    <div class="passenger-selection-header">
+      <h2>Passenger {{ passenger_idx + 1 }} of {{ total_passengers }}</h2>
+      <div class="passenger-details">
+        <div class="passenger-detail">
+          <div class="passenger-detail-label">Name</div>
+          <div class="passenger-detail-value">
+            {{ current_passenger.first_name }} {{ current_passenger.last_name }}
+          </div>
+        </div>
+        <div class="passenger-detail">
+          <div class="passenger-detail-label">Type</div>
+          <div class="passenger-detail-value">
+            {{ current_passenger.age_bracket }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flight Info -->
+    <div class="flight-info">
+      <div class="info-item">
+        <div class="info-label">Airline</div>
+        <div class="info-value">{{ flight_info.airline }}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Flight Number</div>
+        <div class="info-value">{{ flight_info.flight_number }}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Route</div>
+        <div class="info-value">
+          {{ flight_info.from_city }} → {{ flight_info.to_city }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Seat Selection Form -->
+    <form method="POST" action="{{ url_for('select_seats') }}">
+      <input type="hidden" name="passenger_idx" value="{{ passenger_idx }}" />
+      
+      {% for seat_class, rows in seat_map.items() %}
+      <div class="seat-map">
+        <div class="row-label">
+          {{ seat_class }} - ${{ "%.2f"|format(seat_prices[seat_class]) }}
+        </div>
+        <div class="seat-grid">
+          {% for row_num, columns in rows.items() %}
+          <div class="seat-row">
+            {% set sorted_cols = columns.keys() | list | sort %} 
+            {% for col in sorted_cols %} 
+              {% set full_seat = row_num|string + col %} 
+              {% set seat_classes = 'seat ' + seat_class.lower().replace(' ', '-') %} 
+              {% if not columns[col] %} 
+                {% set seat_classes = seat_classes + ' occupied' %} 
+              {% endif %}
+
+              <input
+                type="radio"
+                name="selected_seat"
+                value="{{ full_seat }}"
+                id="seat-{{ full_seat }}"
+                class="seat-radio"
+                {% if not columns[col] %}disabled{% endif %}
+                required
+              />
+              <input 
+                type="hidden" 
+                name="selected_seat_class" 
+                value="{{ seat_class }}"
+              />
+              <label for="seat-{{ full_seat }}" class="{{ seat_classes }}">
+                {{ full_seat }} 
+                {% if not columns[col] %}
+                <span class="occupied-icon">✗</span>
+                {% endif %}
+              </label>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Price Summary -->
+      <div class="summary-panel">
+        <!-- <div class="price-summary">
+          <div class="price-row">
+            <span>Selected Seat Price:</span>
+            <span>
+              {% if current_passenger.get('seat_price') %}
+                ${{ "%.2f"|format(current_passenger.seat_price) }}
+              {% else %}
+                $0.00
+              {% endif %}
+            </span>
+          </div>
+          <div class="price-row total-price">
+            <span>Total for this passenger:</span>
+            <span>
+              {% if current_passenger.get('seat_price') %}
+                ${{ "%.2f"|format(current_passenger.seat_price) }}
+              {% else %}
+                $0.00
+              {% endif %}
+            </span>
+          </div>
+        </div> -->
+
+        <button type="submit" class="confirm-btn">
+          {% if passenger_idx + 1 < total_passengers %} 
+            Confirm Seat for {{ current_passenger.first_name }} & Continue 
+          {% else %} 
+            Confirm All Selections & Complete Booking 
+          {% endif %}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
